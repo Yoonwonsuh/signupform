@@ -166,7 +166,7 @@ const LoginForm = () => {
 
                         <SignupFont>Password</SignupFont>
                         <SignupInputPassword 
-                        type="text"
+                        type="password"
                         name="password"
                         value={user.password}
                         placeholder="type your password"

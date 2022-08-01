@@ -150,7 +150,7 @@ const SignUpForm = () => {
 
                         <SignupFont>Password</SignupFont>
                         <SignupInputPassword 
-                        type="text"
+                        type="password"
                         name="password"
                         value={user.password}
                         placeholder="At least 6 characters"
@@ -160,7 +160,7 @@ const SignUpForm = () => {
 
                         <SignupFont>Re-enter password</SignupFont>
                         <SignupInput
-                        type="text"
+                        type="password"
                         name="password2"
                         value={user.password2}
                         onChange={onSignUPHandler} />
