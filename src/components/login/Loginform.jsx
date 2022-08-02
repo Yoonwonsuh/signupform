@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate} from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from 'axios'
 
 const Frame = styled.div`
     display: flex;
@@ -95,6 +96,19 @@ const NewUniCorn = styled.h3`
 `   
 
 const LoginForm = () => {
+
+    const callSomethingAxios = () =>{
+        axios({
+            method: "get",
+            url: "http://localhost:5001/user_info"
+        }).then(response =>{
+            console.log(response)
+        });
+    }
+
+    useEffect(()=>{
+        callSomethingAxios();
+    });
 
     const userinfo = useSelector((state) => state.userinfo);
 
