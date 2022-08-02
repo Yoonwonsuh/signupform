@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createUser } from "../../redux/modules/Userinfo";
 import { useDispatch } from "react-redux";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -90,8 +90,10 @@ const Visable = styled.div`
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const shortid = shortId.generate();
   let navigate = useNavigate();
+
+
+
 
   const initialState = {
     id: 0,
@@ -106,6 +108,8 @@ const SignUpForm = () => {
     visible: false,
   });
 
+  let [passwordCheck, setPasswordCheck] = useState();
+
   const handlePasswordType = () => {
     setPasswordType(() => {
       if (!passwordType.visible) {
@@ -116,11 +120,30 @@ const SignUpForm = () => {
   };
 
   const [user, setUser] = useState(initialState);
+ 
 
   const onSignUPHandler = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value, id: shortid });
+    setUser({ ...user, [name]: value, id: shortId });
   };
+
+  const num = user.password.search(/[0-9]/g);
+  const eng = user.password.search(/[a-z]/ig);
+  const spe = user.password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+  useEffect(() => {
+    if ( user.password.length < 6) {
+      setPasswordCheck(false);
+    } else if ( user.password.search(/\s/) != -1 ) {
+      setPasswordCheck(false);
+    } else if ( num < 0 || eng < 0 || spe < 0 ) {
+      setPasswordCheck(false);
+    } else if ( user.password === null ) {
+      setPasswordCheck(false)
+    }else {
+      setPasswordCheck(true);
+    }
+  }, [user.password])
 
   const onSubmitHandler = (event) => {
     if (user.nickname === "") {
@@ -132,9 +155,18 @@ const SignUpForm = () => {
     } else if (user.password !== user.password2) {
       event.preventDefault();
       alert("패스워드가 다릅니다.");
-    } else {
+    }
+      else if(!passwordCheck){
+        event.preventDefault();
+        alert("password 양식이 잘못되었습니다!")
+      }
+    else {
       event.preventDefault();
-      dispatch(createUser(user, shortid));
+      dispatch(createUser({
+        nickname: user.nickname,
+        email: user.email,
+        password: user.password
+      }));
       setUser(initialState);
       alert(`${user.nickname}님 회원 가입을 축하드립니다.`);
       navigate(`/`);
@@ -179,11 +211,9 @@ const SignUpForm = () => {
                 {passwordType.visible ? <FaEyeSlash /> :<FaEye />}
               </Visable>
             </SignupDesign>
-
-            <PasswordAlert>
-              Passwords must be at least 6 characters.
-            </PasswordAlert>
-
+            {(!passwordCheck)?(user.password==="") ? <PasswordAlert>
+            영문 대소문자/숫자/특수문자 조합, 6자 이상
+            </PasswordAlert> : <PasswordAlert styled={{color: "red"}}>비밀번호를 형식에 맞게 작성해주세요!</PasswordAlert> :  <PasswordAlert styled={{color:"green"}}>올바른 비밀번호 입니다.</PasswordAlert>}
             <SignupFont>Re-enter password</SignupFont>
             <SignupInput
               type="password"

@@ -7,8 +7,7 @@ let userinfo = createSlice({
             id: 0,
             nickname: "서윤원",
             email: "blacksyw@naver.com",
-            password: "qwerty12345",
-            password2: "qwerty12345"
+            password: "qwerty12345"
         },
            ],
 

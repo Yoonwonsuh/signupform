@@ -119,12 +119,12 @@ const LoginForm = () => {
         setUser({ ...user, [name]: value});
       };
 
-    const nowuser = userinfo.find((userinfo) => userinfo.email == user.email);
+    const nowuser = userinfo.find((userinfo) => userinfo.email === user.email);
 
     const onLogin = (e)=>{
  
         if(nowuser){
-            if(user.password == nowuser.password){
+            if(user.password === nowuser.password){
                 e.preventDefault();
                 alert(`${nowuser.nickname}님 환영합니다.`);
                 navigate(`/main`);
