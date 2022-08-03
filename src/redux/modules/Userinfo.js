@@ -1,4 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
+
+const USER_URL = 'http://localhost:5001/user_info';
+
+export const getUsers = createAsyncThunk('users/getUsers', async(dispatch, getstate)=>{
+    try {
+        const response = await axios.get(USER_URL)
+        return [...response.data];
+
+    } catch (err) {
+        return err.massage;
+    }
+})
 
 let userinfo = createSlice({
     name: 'userinfo',
