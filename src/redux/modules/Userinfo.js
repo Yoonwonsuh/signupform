@@ -1,17 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const USER_URL = 'http://localhost:5001/user_info';
+const USER_URL = 'http://localhost:5001/userinfo';
 
-export const getUsers = createAsyncThunk('users/getUsers', async(dispatch, getstate)=>{
-    try {
-        const response = await axios.get(USER_URL)
-        return [...response.data];
-
-    } catch (err) {
-        return err.massage;
-    }
+export const getUsers = createAsyncThunk('users/createUser', async(dispatch, getstate)=>{
+        const response = await axios.get(USER_URL);
+        return response.data
 })
+
+// export const postUsers = createAsyncThunk('user/createUser', async()=>{
+    
+//         axios.post(USER_URL, {
+//             nickname, email, password
+//         }).then((response)=>{
+//             console.log(response);
+//             window.alert("회원가입을 축하합니다.");
+//         });
+
+// })
 
 let userinfo = createSlice({
     name: 'userinfo',
@@ -31,7 +37,18 @@ let userinfo = createSlice({
         // findTodo: (state, action) =>{
         //     return state.find((todo)=> todo.id === action.payload)    
         //     }
-        }
+        },
+    extraReducers: {
+        [getUsers.pending]: () => {
+            console.log("pending");
+        },
+        [getUsers.fulfilled]: (state, action) => {
+            console.log("Fetched successFully!");
+            return {...state, userinfo: action.payload}
+        },
+    }
+
+
     
 })
 
